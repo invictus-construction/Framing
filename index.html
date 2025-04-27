@@ -1,3 +1,71 @@
+            const jackStudsPerOpening = parseInt(document.getElementById('jackStudsPerOpening').value) || 2;
+            const blockingOption = document.getElementById('blockingOption').value;
+
+            const wallPerimeter = 2 * (length + width);
+            let studsPerimeter = Math.ceil((wallPerimeter * 12) / studSpacing);
+            const cornerStuds = 4;
+
+            const totalKingStuds = openings.length * kingStudsPerOpening;
+            const totalJackStuds = openings.length * jackStudsPerOpening;
+            const totalHeaders = openings.length;
+
+            let blockingPieces = 0;
+            if (blockingOption === 'Yes') {
+                blockingPieces = Math.ceil(wallPerimeter / 4); // 1 every 4 feet approx.
+            }
+
+            const totalStuds = studsPerimeter + cornerStuds + totalKingStuds + totalJackStuds + blockingPieces;
+            const platesNeeded = Math.ceil((2 * wallPerimeter) / 8);
+
+            // Roof Calculations
+            const run = width / 2;
+            const rise = (roofPitch / 12) * run;
+            const baseRafterLength = Math.sqrt(run * run + rise * rise);
+
+            const overhangFeet = Math.max(eaveOverhang, gableOverhang) / 12;
+            const fullRafterLength = Math.sqrt((run + overhangFeet) ** 2 + rise ** 2);
+            const rafterCount = Math.ceil((length * 12) / studSpacing) * 2;
+
+            const ridgeBeam = Math.ceil(length / 8);
+            const flyRafters = 4; // 2 per gable end (both sides).
+
+            const collarTies = Math.ceil(rafterCount / 2); // One collar tie every other rafter pair.
+            const hurricaneTies = rafterCount;
+            const rafterHangers = rafterCount;
+            const joistHangers = Math.ceil((width * 12) / studSpacing) * 2;
+
+            const birdsmouthAngle = Math.atan(rise / run) * (180 / Math.PI);
+
+            // Costs
+            let studPrice = 5;
+            switch (lumberSize) {
+                case '2x6': studPrice = 7; break;
+                case '2x10': studPrice = 12; break;
+                case 'LVL9.25': studPrice = 20; break;
+                case 'LVL11.875': studPrice = 24; break;
+            }
+            const totalCost = studPrice * (totalStuds + platesNeeded + rafterCount + ridgeBeam + flyRafters + blockingPieces);
+
+            // Update DOM
+            document.getElementById('studCount').textContent = totalStuds;
+            document.getElementById('plateCount').textContent = platesNeeded;
+            document.getElementById('rafterCount').textContent = rafterCount;
+            document.getElementById('ridgeBeam').textContent = ridgeBeam;
+            document.getElementById('flyRafters').textContent = flyRafters;
+            document.getElementById('blockingCount').textContent = blockingPieces;
+            document.getElementById('kingStuds').textContent = totalKingStuds;
+            document.getElementById('jackStuds').textContent = totalJackStuds;
+            document.getElementById('headerCount').textContent = totalHeaders;
+            document.getElementById('hurricaneTies').textContent = hurricaneTies;
+            document.getElementById('rafterHangers').textContent = rafterHangers;
+            document.getElementById('collarTies').textContent = collarTies;
+            document.getElementById('joistHangers').textContent = joistHangers;
+            document.getElementById('birdsmouthAngle').textContent = birdsmouthAngle.toFixed(2);
+            document.getElementById('fullRafterLength').textContent = (fullRafterLength).toFixed(2);
+            document.getElementById('totalCost').textContent = totalCost.toFixed(2);
+        }
+
+        const inputs = document.querySelectorAll('input, select');
         inputs.forEach(input => {
             input.addEventListener('input', calculateMaterials);
         });
@@ -36,4 +104,8 @@
 
     </script>
 </body>
-            </html>
+</html>
+
+
+
+
