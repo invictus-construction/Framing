@@ -1,0 +1,39 @@
+        inputs.forEach(input => {
+            input.addEventListener('input', calculateMaterials);
+        });
+
+        calculateMaterials();
+
+        function drawCanvas() {
+            const canvas = document.getElementById('framingCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = parseFtInch(document.getElementById('width').value) * 10; // scale to fit
+            const height = parseFtInch(document.getElementById('height').value) * 10; // scale to fit
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // clear previous drawings
+
+            // Draw walls
+            ctx.beginPath();
+            ctx.rect(50, 50, width, height);
+            ctx.stroke();
+
+            // Draw studs (16" OC for example)
+            const studSpacing = parseInt(document.getElementById('studSpacing').value) * 10; // scale it
+            for (let i = 60; i < width; i += studSpacing) {
+                ctx.moveTo(i, 50);
+                ctx.lineTo(i, height + 50);
+            }
+
+            // Draw openings (doors/windows)
+            openings.forEach(opening => {
+                const location = opening.location * 10; // scale it
+                const openingWidth = opening.width * 10; // scale it
+                ctx.clearRect(location + 50, 50, openingWidth, height); // remove opening space
+            });
+
+            ctx.stroke();
+        }
+
+    </script>
+</body>
+            </html>
